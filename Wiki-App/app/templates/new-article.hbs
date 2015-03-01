@@ -1,0 +1,18 @@
+<div id="newArticlePreview">
+  <span id="previewTitle">
+    <h2>
+      {{title}}
+    </h2>
+  </span>
+  <span id="previewContent">
+    {{content}}
+  </span>
+</div>
+
+<br />
+
+{{input value=title placeholder="Title"}}<br />
+{{textarea value=content placeholder="Write a dope-ass article!" cols="80" rows="12"}}<br />
+<button id="submitNewArticle" {{action "submitNewArticle"}}>
+  Submit
+</button>
