@@ -18,6 +18,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+app.set("views", "../client/dist/")
+
 app.get("/", index.getIndex);
 app.get("/wiki", wiki.getArticles);
 app.get("/wiki/:id", wiki.getArticle);
