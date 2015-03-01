@@ -81,6 +81,7 @@ define('client/router', ['exports', 'ember', 'client/config/environment'], funct
 
   Router.map(function () {
     this.resource("article");
+    this.resource("new-article");
   });
 
   exports['default'] = Router;
@@ -98,9 +99,57 @@ define('client/templates/application', ['exports'], function (exports) {
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
-          var el0 = dom.createElement("h2");
-          dom.setAttribute(el0,"id","title");
-          var el1 = dom.createTextNode("Welcome to Ember.js");
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("h2");
+          dom.setAttribute(el1,"id","title");
+          var el2 = dom.createTextNode("\n    Welcome to Ember.js\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("h2");
+          dom.setAttribute(el1,"id","new-article-link");
+          var el2 = dom.createTextNode("\n    New article, BITCH\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -136,7 +185,11 @@ define('client/templates/application', ['exports'], function (exports) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createTextNode("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
+        var el1 = dom.createElement("br");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -164,9 +217,11 @@ define('client/templates/application', ['exports'], function (exports) {
         }
         if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
         var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
-        var morph1 = dom.createMorphAt(fragment,1,2,contextualElement);
+        var morph1 = dom.createMorphAt(fragment,2,3,contextualElement);
+        var morph2 = dom.createMorphAt(fragment,3,4,contextualElement);
         block(env, morph0, context, "link-to", ["article"], {}, child0, null);
-        content(env, morph1, context, "outlet");
+        block(env, morph1, context, "link-to", ["new-article"], {}, child1, null);
+        content(env, morph2, context, "outlet");
         return fragment;
       }
     };
@@ -477,7 +532,7 @@ catch(err) {
 if (runningTests) {
   require("client/tests/test-helper");
 } else {
-  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.e4d1e262"});
+  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.46021a49"});
 }
 
 /* jshint ignore:end */
