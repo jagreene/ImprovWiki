@@ -18,4 +18,5 @@ module.exports = function(grunt) {
 
   // Custom tasks.
   grunt.registerTask('default','watch');
+  grunt.registerTask('exec','exec');
 };
