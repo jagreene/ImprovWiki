@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'wiki-app',
+    modulePrefix: 'client',
     environment: 'development',
     baseURL: '/',
     locationType: 'auto',
