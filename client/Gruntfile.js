@@ -4,10 +4,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     exec: {
-      command: 'ember build; mv dist/assets/ dist/index.html ../server/public'
+      command: 'ember build; cp -rf dist/assets/ dist/index.html ../server/public'
     },
     watch: {
-      files: ['app/**'],
+      files: ['app/controllers/*','app/templates/*','app/router.js','app/helpers/*','app/components/*','app/views/*','app/styles/*','app/models/*','app/app.js'],
       tasks: 'exec'
     }
   });
