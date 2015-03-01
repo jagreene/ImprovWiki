@@ -14,9 +14,7 @@ module.exports = function(grunt) {
 
   // Load plugins and tasks.
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-exec');
-
+  grunt.loadNpmTasks('grunt-exec'); 
   // Custom tasks.
   grunt.registerTask('default','watch');
-  grunt.registerTask('exec','exec');
 };

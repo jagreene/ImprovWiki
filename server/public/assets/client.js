@@ -19,6 +19,27 @@ define('client/app', ['exports', 'ember', 'ember/resolver', 'ember/load-initiali
   exports['default'] = App;
 
 });
+define('client/controllers/article', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend({
+    actions: {
+      submitNewArticle: function submitNewArticle() {
+        var newArticle = store.createRecord("article", {
+          name: "test tile",
+          category: "farts",
+          lastRevision: "",
+          subarticles: undefined,
+          time: "now",
+          body: "this is a test"
+        });
+        newArticle.save();
+      }
+    }
+  });
+
+});
 define('client/initializers/app-version', ['exports', 'client/config/environment', 'ember'], function (exports, config, Ember) {
 
   'use strict';
@@ -185,9 +206,7 @@ define('client/templates/application', ['exports'], function (exports) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createTextNode("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("br");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createTextNode("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -197,7 +216,7 @@ define('client/templates/application', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, block = hooks.block, content = hooks.content;
+        var hooks = env.hooks, block = hooks.block, get = hooks.get, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -215,12 +234,12 @@ define('client/templates/application', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
         var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
-        var morph1 = dom.createMorphAt(fragment,2,3,contextualElement);
-        var morph2 = dom.createMorphAt(fragment,3,4,contextualElement);
+        var morph1 = dom.createMorphAt(fragment,1,2,contextualElement);
+        var morph2 = dom.createMorphAt(fragment,2,3,contextualElement);
         block(env, morph0, context, "link-to", ["article"], {}, child0, null);
-        block(env, morph1, context, "link-to", ["new-article"], {}, child1, null);
+        block(env, morph1, context, "link-to", ["new-article", get(env, context, "article")], {}, child1, null);
         content(env, morph2, context, "outlet");
         return fragment;
       }
@@ -384,6 +403,16 @@ define('client/tests/app.jshint', function () {
   });
 
 });
+define('client/tests/controllers/article.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - controllers');
+  test('controllers/article.js should pass jshint', function() { 
+    ok(false, 'controllers/article.js should pass jshint.\ncontrollers/article.js: line 6, col 24, \'store\' is not defined.\n\n1 error'); 
+  });
+
+});
 define('client/tests/helpers/resolver', ['exports', 'ember/resolver', 'client/config/environment'], function (exports, Resolver, config) {
 
   'use strict';
@@ -478,6 +507,32 @@ define('client/tests/test-helper.jshint', function () {
   });
 
 });
+define('client/tests/unit/controllers/article-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("controller:article", {});
+
+  // Replace this with your real tests.
+  ember_qunit.test("it exists", function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('client/tests/unit/controllers/article-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/controllers');
+  test('unit/controllers/article-test.js should pass jshint', function() { 
+    ok(true, 'unit/controllers/article-test.js should pass jshint.'); 
+  });
+
+});
 define('client/tests/unit/models/article-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -532,7 +587,7 @@ catch(err) {
 if (runningTests) {
   require("client/tests/test-helper");
 } else {
-  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.46021a49"});
+  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.30262daf"});
 }
 
 /* jshint ignore:end */
