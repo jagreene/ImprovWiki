@@ -9,4 +9,4 @@ var articlesSchema = mongoose.Schema({
     body: String,
 });
 
-module.exports.burgersSchema = articlesSchema;
+module.exports.articlesSchema = articlesSchema;

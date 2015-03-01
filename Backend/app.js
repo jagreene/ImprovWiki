@@ -10,7 +10,7 @@ var wiki  = require("./routes/wiki");
 
 var app = express();
 
-var PORT = process.env.PORT || 3000
+var PORT = process.env.PORT || 3001
 
 app.use(logger("dev"));
 app.use(bodyParser.json());
@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.get("/", index.getIndex);
 app.get("/wiki", wiki.getArticles);
 app.get("/wiki/:id", wiki.getArticle);
 
