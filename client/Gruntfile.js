@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     exec: {
-      command: 'ember build'
+      command: 'ember build; mv dist/assets/ dist/index.html ../server/public'
     },
     watch: {
       files: ['app/**'],
