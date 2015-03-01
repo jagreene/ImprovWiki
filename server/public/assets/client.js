@@ -2,6 +2,22 @@
 
 /* jshint ignore:end */
 
+define('client/adapters/application', ['exports', 'ember-data'], function (exports, DS) {
+
+	'use strict';
+
+	exports['default'] = DS['default'].RESTAdapter.extend({
+		namespace: "api/"
+	});
+
+});
+define('client/adapters/article', ['exports', 'client/adapters/application'], function (exports, ApplicationAdapter) {
+
+	'use strict';
+
+	exports['default'] = ApplicationAdapter['default'].extend({});
+
+});
 define('client/app', ['exports', 'ember', 'ember/resolver', 'ember/load-initializers', 'client/config/environment'], function (exports, Ember, Resolver, loadInitializers, config) {
 
   'use strict';
@@ -106,6 +122,15 @@ define('client/router', ['exports', 'ember', 'client/config/environment'], funct
   });
 
   exports['default'] = Router;
+
+});
+define('client/serializers/application', ['exports', 'ember-data'], function (exports, DS) {
+
+	'use strict';
+
+	exports['default'] = DS['default'].RESTSerializer.extend({
+		primaryKey: "_id"
+	});
 
 });
 define('client/templates/application', ['exports'], function (exports) {
@@ -393,6 +418,26 @@ define('client/templates/new-article', ['exports'], function (exports) {
   }()));
 
 });
+define('client/tests/adapters/application.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - adapters');
+  test('adapters/application.js should pass jshint', function() { 
+    ok(true, 'adapters/application.js should pass jshint.'); 
+  });
+
+});
+define('client/tests/adapters/article.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - adapters');
+  test('adapters/article.js should pass jshint', function() { 
+    ok(true, 'adapters/article.js should pass jshint.'); 
+  });
+
+});
 define('client/tests/app.jshint', function () {
 
   'use strict';
@@ -490,6 +535,16 @@ define('client/tests/router.jshint', function () {
   });
 
 });
+define('client/tests/serializers/application.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - serializers');
+  test('serializers/application.js should pass jshint', function() { 
+    ok(true, 'serializers/application.js should pass jshint.'); 
+  });
+
+});
 define('client/tests/test-helper', ['client/tests/helpers/resolver', 'ember-qunit'], function (resolver, ember_qunit) {
 
 	'use strict';
@@ -504,6 +559,58 @@ define('client/tests/test-helper.jshint', function () {
   module('JSHint - .');
   test('test-helper.js should pass jshint', function() { 
     ok(true, 'test-helper.js should pass jshint.'); 
+  });
+
+});
+define('client/tests/unit/adapters/application-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("adapter:application", "ApplicationAdapter", {});
+
+  // Replace this with your real tests.
+  ember_qunit.test("it exists", function (assert) {
+    var adapter = this.subject();
+    assert.ok(adapter);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['serializer:foo']
+
+});
+define('client/tests/unit/adapters/application-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/adapters');
+  test('unit/adapters/application-test.js should pass jshint', function() { 
+    ok(true, 'unit/adapters/application-test.js should pass jshint.'); 
+  });
+
+});
+define('client/tests/unit/adapters/article-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("adapter:article", "ArticleAdapter", {});
+
+  // Replace this with your real tests.
+  ember_qunit.test("it exists", function (assert) {
+    var adapter = this.subject();
+    assert.ok(adapter);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['serializer:foo']
+
+});
+define('client/tests/unit/adapters/article-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/adapters');
+  test('unit/adapters/article-test.js should pass jshint', function() { 
+    ok(true, 'unit/adapters/article-test.js should pass jshint.'); 
   });
 
 });
@@ -559,6 +666,32 @@ define('client/tests/unit/models/article-test.jshint', function () {
   });
 
 });
+define('client/tests/unit/serializers/application-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("serializer:application", {});
+
+  // Replace this with your real tests.
+  ember_qunit.test("it exists", function (assert) {
+    var serializer = this.subject();
+    assert.ok(serializer);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['serializer:foo']
+
+});
+define('client/tests/unit/serializers/application-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/serializers');
+  test('unit/serializers/application-test.js should pass jshint', function() { 
+    ok(true, 'unit/serializers/application-test.js should pass jshint.'); 
+  });
+
+});
 /* jshint ignore:start */
 
 /* jshint ignore:end */
@@ -587,7 +720,7 @@ catch(err) {
 if (runningTests) {
   require("client/tests/test-helper");
 } else {
-  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.30262daf"});
+  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.54e18d10"});
 }
 
 /* jshint ignore:end */
