@@ -1,10 +1,23 @@
-<h2 id="title">
-  Welcome to Ember.js
-</h2>
-{{#link-to "article.new-article"}}
-  <h2 id="new-article-link">
-    New article, BITCH
-  </h2>
-{{/link-to}}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="well sidebar">
+        <h2 id="title">
+          Improv Wiki
+        </h2>
+        <br>
+        {{#link-to "articles.new"}}
+          <h4 id="new-article-link">
+            Make a New Article
+          </h4>
+        {{/link-to}}
+      </div>
+    </div>
 
-{{outlet}}
+    <div class="col-md-9">
+      {{outlet}}
+    </div>
+  </div>
+</div>
+
+

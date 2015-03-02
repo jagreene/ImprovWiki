@@ -6,10 +6,11 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.resource('article', function() {
-    this.route('new-article');
-  });
   //this.resource('new-article');
+  this.resource('articles', function() {
+    this.route('view', {path: 'article/view/:article_id'});
+    this.route('new');
+  });
 });
 
 export default Router;

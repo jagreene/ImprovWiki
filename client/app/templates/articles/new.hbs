@@ -1,0 +1,22 @@
+<div class='well' id="newArticlePreview">
+  <span id="previewTitle">
+    <h2>
+      {{name}}
+    </h2>
+  </span>
+  <span id="previewContent">
+    {{body}}
+  </span>
+</div>
+
+<div class="well">
+  {{input value=name placeholder="Title"}}
+  {{view "select" content=categories optionLabelPath='content' selection=category placeholder="Category"}}
+
+  <br>
+
+  {{textarea value=body cols="80" rows="12"}}<br />
+  <button id="submitNewArticle" {{action "submitNewArticle" name category body}}>
+    Submit
+  </button>
+</div>

@@ -17,4 +17,7 @@ var app = new EmberApp();
 // please specify an object with the list of modules as keys
 // along with the exports of each module as its value.
 
+app.import('bower_components/bootstrap/dist/css/bootstrap.min.css');
+app.import('bower_components/bootstrap-material-design/dist/css/material-wfont.min.css');
+app.import('bower_components/bootstrap-material-design/dist/js/material.min.js');
 module.exports = app.toTree();

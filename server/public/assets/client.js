@@ -7,7 +7,7 @@ define('client/adapters/application', ['exports', 'ember-data'], function (expor
 	'use strict';
 
 	exports['default'] = DS['default'].RESTAdapter.extend({
-		namespace: "api/"
+		namespace: "api"
 	});
 
 });
@@ -35,20 +35,31 @@ define('client/app', ['exports', 'ember', 'ember/resolver', 'ember/load-initiali
   exports['default'] = App;
 
 });
-define('client/controllers/article', ['exports', 'ember'], function (exports, Ember) {
+define('client/components/select-2', ['exports', 'ember-select-2/components/select-2'], function (exports, Select2Component) {
+
+	'use strict';
+
+	/*
+		This is just a proxy file requiring the component from the /addon folder and
+		making it available to the dummy application!
+	 */
+	exports['default'] = Select2Component['default'];
+
+});
+define('client/controllers/articles/new', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Controller.extend({
+    categories: ["Long Form", "Short Form", "Festivals", "Troops"],
     actions: {
-      submitNewArticle: function submitNewArticle() {
-        var newArticle = store.createRecord("article", {
-          name: "test tile",
-          category: "farts",
+      submitNewArticle: function submitNewArticle(name, category, body) {
+        var newArticle = this.store.createRecord("article", {
+          name: name,
+          category: category,
           lastRevision: "",
-          subarticles: undefined,
-          time: "now",
-          body: "this is a test"
+          time: new Date(),
+          body: body
         });
         newArticle.save();
       }
@@ -83,9 +94,7 @@ define('client/initializers/export-application-global', ['exports', 'ember', 'cl
     if (config['default'].exportApplicationGlobal && !window[classifiedName]) {
       window[classifiedName] = application;
     }
-  }
-
-  ;
+  };
 
   exports['default'] = {
     name: "export-application-global",
@@ -102,7 +111,6 @@ define('client/models/article', ['exports', 'ember-data'], function (exports, DS
     name: DS['default'].attr("string"),
     category: DS['default'].attr("string"),
     lastRevision: DS['default'].attr("string"),
-    subarticles: DS['default'].attr(""),
     time: DS['default'].attr("date"),
     body: DS['default'].attr("string")
   });
@@ -117,11 +125,41 @@ define('client/router', ['exports', 'ember', 'client/config/environment'], funct
   });
 
   Router.map(function () {
-    this.resource("article");
-    this.resource("new-article");
+    //this.resource('new-article');
+    this.resource("articles", function () {
+      this.route("view", { path: "article/view/:article_id" });
+      this.route("new");
+    });
   });
 
   exports['default'] = Router;
+
+});
+define('client/routes/articles/index', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    model: function model() {
+      return this.store.find("article");
+    }
+  });
+
+});
+define('client/routes/articles/new', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend({
+    setupController: function setupController(controller) {
+      controller.set("name", "Title");
+      controller.set("body", "Body");
+    },
+
+    model: function model() {
+      return this.store.find("article");
+    }
+  });
 
 });
 define('client/serializers/application', ['exports', 'ember-data'], function (exports, DS) {
@@ -146,53 +184,11 @@ define('client/templates/application', ['exports'], function (exports) {
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
+          var el1 = dom.createTextNode("          ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("h2");
-          dom.setAttribute(el1,"id","title");
-          var el2 = dom.createTextNode("\n    Welcome to Ember.js\n  ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        render: function render(context, env, contextualElement) {
-          var dom = env.dom;
-          dom.detectNamespace(contextualElement);
-          var fragment;
-          if (env.useFragmentCache && dom.canClone) {
-            if (this.cachedFragment === null) {
-              fragment = this.build(dom);
-              if (this.hasRendered) {
-                this.cachedFragment = fragment;
-              } else {
-                this.hasRendered = true;
-              }
-            }
-            if (this.cachedFragment) {
-              fragment = dom.cloneNode(this.cachedFragment, true);
-            }
-          } else {
-            fragment = this.build(dom);
-          }
-          return fragment;
-        }
-      };
-    }());
-    var child1 = (function() {
-      return {
-        isHTMLBars: true,
-        blockParams: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        build: function build(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("  ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("h2");
+          var el1 = dom.createElement("h4");
           dom.setAttribute(el1,"id","new-article-link");
-          var el2 = dom.createTextNode("\n    New article, BITCH\n  ");
+          var el2 = dom.createTextNode("\n            Make a New Article\n          ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
@@ -229,19 +225,61 @@ define('client/templates/application', ['exports'], function (exports) {
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","container-fluid");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","row");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-3");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","well sidebar");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h2");
+        dom.setAttribute(el5,"id","title");
+        var el6 = dom.createTextNode("\n          Improv Wiki\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","col-md-9");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createTextNode("\n\n\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, block = hooks.block, get = hooks.get, content = hooks.content;
+        var hooks = env.hooks, block = hooks.block, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -259,20 +297,18 @@ define('client/templates/application', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
-        var morph1 = dom.createMorphAt(fragment,1,2,contextualElement);
-        var morph2 = dom.createMorphAt(fragment,2,3,contextualElement);
-        block(env, morph0, context, "link-to", ["article"], {}, child0, null);
-        block(env, morph1, context, "link-to", ["new-article", get(env, context, "article")], {}, child1, null);
-        content(env, morph2, context, "outlet");
+        var element0 = dom.childAt(fragment, [0, 1]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1]),4,5);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,1);
+        block(env, morph0, context, "link-to", ["articles.new"], {}, child0, null);
+        content(env, morph1, context, "outlet");
         return fragment;
       }
     };
   }()));
 
 });
-define('client/templates/article', ['exports'], function (exports) {
+define('client/templates/articles/index', ['exports'], function (exports) {
 
   'use strict';
 
@@ -284,8 +320,26 @@ define('client/templates/article', ['exports'], function (exports) {
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("h1");
-        var el2 = dom.createTextNode(" ARTICLES BITCH ");
+        var el1 = dom.createElement("h2");
+        var el2 = dom.createTextNode(" ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode(" ");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("h2");
+        var el2 = dom.createTextNode(" ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode(" ");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("h2");
+        var el2 = dom.createTextNode(" ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode(" ");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -294,6 +348,7 @@ define('client/templates/article', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
+        var hooks = env.hooks, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -311,13 +366,19 @@ define('client/templates/article', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0]),0,1);
+        var morph1 = dom.createMorphAt(dom.childAt(fragment, [2]),0,1);
+        var morph2 = dom.createMorphAt(dom.childAt(fragment, [4]),0,1);
+        content(env, morph0, context, "articles");
+        content(env, morph1, context, "article");
+        content(env, morph2, context, "model");
         return fragment;
       }
     };
   }()));
 
 });
-define('client/templates/new-article', ['exports'], function (exports) {
+define('client/templates/articles/new', ['exports'], function (exports) {
 
   'use strict';
 
@@ -330,6 +391,7 @@ define('client/templates/new-article', ['exports'], function (exports) {
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","well");
         dom.setAttribute(el1,"id","newArticlePreview");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
@@ -360,21 +422,28 @@ define('client/templates/new-article', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("br");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("br");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("br");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("button");
-        dom.setAttribute(el1,"id","submitNewArticle");
-        var el2 = dom.createTextNode("\n  Submit\n");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","well");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("br");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("br");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2,"id","submitNewArticle");
+        var el3 = dom.createTextNode("\n    Submit\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -402,16 +471,19 @@ define('client/templates/new-article', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [0]);
-        var element1 = dom.childAt(fragment, [8]);
+        var element1 = dom.childAt(fragment, [2]);
+        var element2 = dom.childAt(element1, [7]);
         var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 1]),0,1);
         var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,1);
-        var morph2 = dom.createMorphAt(fragment,3,4,contextualElement);
-        var morph3 = dom.createMorphAt(fragment,5,6,contextualElement);
-        content(env, morph0, context, "title");
-        content(env, morph1, context, "content");
-        inline(env, morph2, context, "input", [], {"value": get(env, context, "title"), "placeholder": "Title"});
-        inline(env, morph3, context, "textarea", [], {"value": get(env, context, "content"), "placeholder": "Write a dope-ass article!", "cols": "80", "rows": "12"});
-        element(env, element1, context, "action", ["submitNewArticle"], {});
+        var morph2 = dom.createMorphAt(element1,0,1);
+        var morph3 = dom.createMorphAt(element1,1,2);
+        var morph4 = dom.createMorphAt(element1,4,5);
+        content(env, morph0, context, "name");
+        content(env, morph1, context, "body");
+        inline(env, morph2, context, "input", [], {"value": get(env, context, "name"), "placeholder": "Title"});
+        inline(env, morph3, context, "view", ["select"], {"content": get(env, context, "categories"), "optionLabelPath": "content", "selection": get(env, context, "category"), "placeholder": "Category"});
+        inline(env, morph4, context, "textarea", [], {"value": get(env, context, "body"), "cols": "80", "rows": "12"});
+        element(env, element2, context, "action", ["submitNewArticle", get(env, context, "name"), get(env, context, "category"), get(env, context, "body")], {});
         return fragment;
       }
     };
@@ -448,13 +520,13 @@ define('client/tests/app.jshint', function () {
   });
 
 });
-define('client/tests/controllers/article.jshint', function () {
+define('client/tests/controllers/articles/new.jshint', function () {
 
   'use strict';
 
-  module('JSHint - controllers');
-  test('controllers/article.js should pass jshint', function() { 
-    ok(false, 'controllers/article.js should pass jshint.\ncontrollers/article.js: line 6, col 24, \'store\' is not defined.\n\n1 error'); 
+  module('JSHint - controllers/articles');
+  test('controllers/articles/new.js should pass jshint', function() { 
+    ok(true, 'controllers/articles/new.js should pass jshint.'); 
   });
 
 });
@@ -532,6 +604,26 @@ define('client/tests/router.jshint', function () {
   module('JSHint - .');
   test('router.js should pass jshint', function() { 
     ok(true, 'router.js should pass jshint.'); 
+  });
+
+});
+define('client/tests/routes/articles/index.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - routes/articles');
+  test('routes/articles/index.js should pass jshint', function() { 
+    ok(true, 'routes/articles/index.js should pass jshint.'); 
+  });
+
+});
+define('client/tests/routes/articles/new.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - routes/articles');
+  test('routes/articles/new.js should pass jshint', function() { 
+    ok(true, 'routes/articles/new.js should pass jshint.'); 
   });
 
 });
@@ -640,6 +732,32 @@ define('client/tests/unit/controllers/article-test.jshint', function () {
   });
 
 });
+define('client/tests/unit/controllers/new-article-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("controller:new-article", {});
+
+  // Replace this with your real tests.
+  ember_qunit.test("it exists", function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('client/tests/unit/controllers/new-article-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/controllers');
+  test('unit/controllers/new-article-test.js should pass jshint', function() { 
+    ok(true, 'unit/controllers/new-article-test.js should pass jshint.'); 
+  });
+
+});
 define('client/tests/unit/models/article-test', ['ember-qunit'], function (ember_qunit) {
 
   'use strict';
@@ -663,6 +781,81 @@ define('client/tests/unit/models/article-test.jshint', function () {
   module('JSHint - unit/models');
   test('unit/models/article-test.js should pass jshint', function() { 
     ok(true, 'unit/models/article-test.js should pass jshint.'); 
+  });
+
+});
+define('client/tests/unit/routes/article-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("route:article", {});
+
+  ember_qunit.test("it exists", function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('client/tests/unit/routes/article-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/routes');
+  test('unit/routes/article-test.js should pass jshint', function() { 
+    ok(true, 'unit/routes/article-test.js should pass jshint.'); 
+  });
+
+});
+define('client/tests/unit/routes/articles-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("route:articles", {});
+
+  ember_qunit.test("it exists", function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('client/tests/unit/routes/articles-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/routes');
+  test('unit/routes/articles-test.js should pass jshint', function() { 
+    ok(true, 'unit/routes/articles-test.js should pass jshint.'); 
+  });
+
+});
+define('client/tests/unit/routes/new-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("route:new", {});
+
+  ember_qunit.test("it exists", function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('client/tests/unit/routes/new-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/routes');
+  test('unit/routes/new-test.js should pass jshint', function() { 
+    ok(true, 'unit/routes/new-test.js should pass jshint.'); 
   });
 
 });
@@ -720,7 +913,7 @@ catch(err) {
 if (runningTests) {
   require("client/tests/test-helper");
 } else {
-  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.54e18d10"});
+  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.8a8a2e96"});
 }
 
 /* jshint ignore:end */

@@ -23,15 +23,16 @@ app.set('view engine', 'html');
 
 app.set("views", "../client/dist/")
 
+console.log("whats up bro");
 app.get("/", index.getIndex);
-app.get("api/article", wiki.getArticles);
-app.get("api/article/:id", wiki.getArticle);
+app.get("/api/articles", wiki.getArticles);
+app.get("/api/articles/:id", wiki.getArticle);
 
-app.put("api/article/:id", wiki.updateArticle);
+app.put("/api/articles/:id", wiki.updateArticle);
 
-app.post("api/article", wiki.createArticle);
+app.post("/api/articles", wiki.createArticle);
 
-app.delete("api/article/:id", wiki.deleteArticle);
+app.delete("/api/articles/:id", wiki.deleteArticle);
 
 app.listen(PORT, function() {
   console.log("App running on port:", PORT);

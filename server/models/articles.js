@@ -1,10 +1,9 @@
 var mongoose = require("mongoose");
 
 var articlesSchema = mongoose.Schema({
-		name: String,
+	name: String,
     category: String,
     lastRevision: String,
-    subarticles: Array,
     time: Date,
     body: String,
 });
