@@ -1,7 +1,32 @@
 .sidebar {
 	margin-top: 2.5vh;
 	margin-bottom: 2.5vh;
-	height: 95vh;
+	min-height: 95vh;
+}
+
+.article-group {
+	text-align: center;
+}
+
+.btn-article {
+	width: 50%
+}
+
+.btn-submit-edit{
+	position: absolute;
+	bottom: 5%;
+	right: 5%;
+}
+
+.btn-edit {
+	position: absolute;
+	bottom: 5%;
+	right: 5%;
+}
+
+#article {
+	margin-top: 2.5vh;
+	min-height: 95vh;
 }
 
 #newArticlePreview {

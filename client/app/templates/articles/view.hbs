@@ -1,0 +1,14 @@
+<div class='well' id="article">
+  <span id="title">
+    <h2>
+      {{model.name}} <small> {{model.category}} </small>
+    </h2>
+  </span>
+  <span id="content">
+    {{model.body}}
+  </span>
+
+  {{#link-to "articles.edit" model class="btn btn-default btn-raised btn-edit"}} Edit  {{/link-to}}
+
+</div>
+

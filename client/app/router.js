@@ -9,6 +9,7 @@ Router.map(function() {
   //this.resource('new-article');
   this.resource('articles', function() {
     this.route('view', {path: 'article/view/:article_id'});
+    this.route('edit', {path: 'article/edit/:article_id'});
     this.route('new');
   });
 });

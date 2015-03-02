@@ -11,6 +11,11 @@
             Make a New Article
           </h4>
         {{/link-to}}
+        <div class="article-group">
+          {{#each article in model}}
+            {{#link-to "articles.view" article class="btn btn-default btn-raised btn-article"}} {{article.name}} {{/link-to}}
+          {{/each}}
+        </div>
       </div>
     </div>
 
