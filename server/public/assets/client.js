@@ -564,7 +564,7 @@ define('client/templates/articles/edit', ['exports'], function (exports) {
         inline(env, morph2, context, "input", [], {"value": get(env, context, "model.name"), "placeholder": "Title"});
         inline(env, morph3, context, "view", ["select"], {"content": get(env, context, "categories"), "optionLabelPath": "content", "selection": get(env, context, "model.category")});
         inline(env, morph4, context, "textarea", [], {"value": get(env, context, "model.body"), "cols": "80", "rows": "12"});
-        block(env, morph5, context, "link-to", ["articles.view", get(env, context, "model")], {"class": "btn btn-default btn-raised btn-submit-edit"}, child0, null);
+        block(env, morph5, context, "link-to", ["articles.view", get(env, context, "model")], {"class": "btn btn-primary btn-raised btn-submit-edit"}, child0, null);
         return fragment;
       }
     };
@@ -871,7 +871,7 @@ define('client/templates/articles/view', ['exports'], function (exports) {
         content(env, morph0, context, "model.name");
         content(env, morph1, context, "model.category");
         content(env, morph2, context, "model.body");
-        block(env, morph3, context, "link-to", ["articles.edit", get(env, context, "model")], {"class": "btn btn-default btn-raised btn-edit"}, child0, null);
+        block(env, morph3, context, "link-to", ["articles.edit", get(env, context, "model")], {"class": "btn btn-primary btn-raised btn-edit"}, child0, null);
         return fragment;
       }
     };
@@ -1331,7 +1331,7 @@ catch(err) {
 if (runningTests) {
   require("client/tests/test-helper");
 } else {
-  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.daff4272"});
+  require("client/app")["default"].create({"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_TRANSITIONS":true,"LOG_TRANSITIONS_INTERNAL":true,"LOG_VIEW_LOOKUPS":true,"name":"client","version":"0.0.0.c49173a8"});
 }
 
 /* jshint ignore:end */
