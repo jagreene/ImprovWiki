@@ -1,5 +1,5 @@
 import Ember from 'ember';
-
+//bind new article action and categories variable to edit template
 export default Ember.Controller.extend({
   categories: ["Long Form", "Short Form", "Festivals", "Troops"],
   actions: {
