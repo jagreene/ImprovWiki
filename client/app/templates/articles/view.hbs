@@ -1,3 +1,7 @@
+<!-- Rendered when you click to view an article
+	 (/article/view/_id)
+	 Displays the title and body of the article, 
+	 and gives you the option to enter edit. -->
 <div class='well' id="article">
   <span id="title">
     <h2>
@@ -8,6 +12,7 @@
     {{model.body}}
   </span>
 
+  <!-- Link to the EDIT page, passing in this article model -->
   {{#link-to "articles.edit" model class="btn btn-primary btn-raised btn-edit"}} Edit  {{/link-to}}
 
 </div>

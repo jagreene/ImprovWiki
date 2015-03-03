@@ -1,16 +1,27 @@
+<!-- Main application homepage -->
+
 <div class="container-fluid">
   <div class="row">
+
+    <!-- Left box, used for navigation -->
     <div class="col-md-3">
       <div class="well sidebar">
+        <!-- Title -->
         <h2 id="title">
           The Improv Wiki
         </h2>
         <br>
+
+        <!-- New Article button -->
         {{#link-to "articles.new"}}
           <h4 id="new-article-link">
             Make a New Article
           </h4>
         {{/link-to}}
+
+        <!-- List of links to article-views
+             Each one will render the articles.view template,
+             passing in the appropriate article as the model -->
         <div class="article-group">
           {{#each article in model}}
             {{#link-to "articles.view" article class="btn btn-default btn-raised btn-article"}} {{article.name}} {{/link-to}}
@@ -19,6 +30,7 @@
       </div>
     </div>
 
+    <!-- Right box, which will eventually be filled with new, edit, or view template. -->
     <div class="col-md-9">
       {{outlet}}
     </div>

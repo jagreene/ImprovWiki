@@ -1,3 +1,11 @@
+<!-- Rendered whenever you click "Edit" from the main article page -->
+
+<!-- Live-updating preview area
+     The text-values for the title and content spans
+     are tied directly to the article model's name and
+     body attributes, allowing it to auto-update
+     when the textfields are modified
+     (and saving us the trouble of making AJAX calls) -->
 <div class='well' id="newArticlePreview">
   <span id="previewTitle">
     <h2>
@@ -9,6 +17,10 @@
   </span>
 </div>
 
+<!-- Input for title and body
+     The values of each input field is tied directly to
+     the article model's name and body attributes,
+     which auto-updates the mongoose model (and the preview) -->
 <div class="well">
   {{input value=model.name placeholder="Title"}}
   {{view "select" content=categories optionLabelPath='content' selection=model.category}}

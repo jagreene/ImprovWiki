@@ -1,3 +1,7 @@
+<!-- Rendered when you choose to create a new article. -->
+
+<!-- Live-updating preview of article title and body,
+     tied to the input fields below. -->
 <div class='well' id="newArticlePreview">
   <span id="previewTitle">
     <h2>
@@ -9,6 +13,7 @@
   </span>
 </div>
 
+<!-- Input fields for the new article. -->
 <div class="well">
   {{input value=name placeholder="Title"}}
   {{view "select" content=categories optionLabelPath='content' selection=category placeholder="Category"}}
@@ -16,6 +21,9 @@
   <br>
 
   {{textarea value=body cols="80" rows="12"}}<br />
+
+  <!-- Clicking the "SUBMIT" button will active the submitNewArticle action
+       (defined in controllers/articles/new) -->
   <button id="submitNewArticle" {{action "submitNewArticle" name category body}}>
     Submit
   </button>
